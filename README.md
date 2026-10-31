@@ -48,3 +48,6 @@ No cargar placas reales, datos de residentes ni imágenes personales. Sin autent
 
 ## Evidencias
 La construcción, pruebas y publicación se verificarán en GitHub Actions. No considerar un flujo exitoso como prueba de exactitud del modelo. Las métricas históricas permanecen en el repositorio de Actividad 5.
+
+## Cierre documental y pruebas reales (31 octubre 2026)
+Se realizó una [doble verificación de la entrega y de las pruebas manuales](docs/07_cierre_y_pruebas_manuales.md). El caso Jalisco `JCZ-263-A` fue reconocido y derivado a revisión manual; el caso Estado de México `PCH-96-04` no pudo leerse y también se derivó a revisión manual. No confundir los resultados sintéticos (6/6) con precisión en fotografías reales. [CI verificada más reciente](https://github.com/roquegarciaespinoza-ops/Vision-Computacional-Fase-II/actions/runs/41253589161). Entregables PDF y DOCX en [entregables/](entregables/).

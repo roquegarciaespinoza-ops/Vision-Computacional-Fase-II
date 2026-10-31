@@ -16,6 +16,16 @@ Abrir http://localhost:8000 ; API en http://localhost:8000/docs ; salud en http:
 
 La imagen publicada en Docker Hub puede ejecutarse sustituyendo `vision-fase-ii:local` por el nombre y etiqueta **verificados** de la imagen publicada.
 
+## Demostración inmediata para el evaluador
+Abrir http://localhost:8000 y pulsar **«Probar con matrícula sintética 1234ABC»**. La aplicación genera una imagen ficticia en `GET /api/demo/placa.png`, la envía al OCR mediante la misma API que usa la carga manual y muestra el resultado. No se requieren imágenes personales ni archivos externos. Este caso está cubierto por una prueba de integración en CI.
+
+## Imagen verificada en Docker Hub
+```bash
+docker pull roquegarciaespinoza/vision-computacional-fase-ii:fase2-baseline
+docker run --rm -p 8000:8000 roquegarciaespinoza/vision-computacional-fase-ii:fase2-baseline
+```
+**Nota:** la etiqueta `fase2-baseline` se actualiza cuando el flujo termina correctamente; revisar [GitHub Actions](https://github.com/roquegarciaespinoza-ops/Vision-Computacional-Fase-II/actions) para verificar la versión más reciente.
+
 ## API
 - `GET /health`: estado del servicio.
 - `POST /api/reconocer`: multipart `archivo` PNG/JPEG/WebP, máximo 5 MB; devuelve texto OCR, placa normalizada, decisión simulada y latencia.
@@ -26,7 +36,7 @@ Padrón **ficticio**: `1234ABC` y `5678DEF`. Una coincidencia solo produce `SIMU
 ## Pruebas
 ```bash
 docker build -t vision-fase-ii:local .
-docker run --rm vision-fase-ii:local pytest -q
+docker run --rm vision-fase-ii:local python -m pytest -q
 ```
 Las pruebas automatizadas verifican salud, frontend, normalización, autorización simulada y rechazos por tipo, tamaño y corrupción de archivos. **No constituyen una validación de precisión OCR**, que requiere imágenes etiquetadas y evaluación independiente.
 

@@ -13,8 +13,8 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"entregables"
 OUT.mkdir(exist_ok=True)
 FILES=[
- ("Manual_despliegue_nube",["docs/01_arquitectura_y_alcance.md","docs/02_manual_despliegue.md"]),
- ("Informe_pruebas_validacion",["docs/03_validacion_y_evidencias.md","docs/05_evaluacion_ocr_sintetica.md","docs/06_resultados_verificados.md"])
+ ("Manual_despliegue_nube",["docs/01_arquitectura_y_alcance.md","docs/02_manual_despliegue.md","docs/07_cierre_y_pruebas_manuales.md"]),
+ ("Informe_pruebas_validacion",["docs/03_validacion_y_evidencias.md","docs/05_evaluacion_ocr_sintetica.md","docs/06_resultados_verificados.md","docs/07_cierre_y_pruebas_manuales.md","docs/04_matriz_rubrica.md"])
 ]
 
 def lines(paths):

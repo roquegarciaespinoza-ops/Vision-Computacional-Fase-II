@@ -43,7 +43,7 @@ def reconocer_texto(im: Image.Image) -> tuple[str, str]:
     if re.fullmatch(r"[0-9]{4}[A-Z]{3}", normalizar(principal)):
         return normalizar(principal), principal
     w, h = gris.size
-    franja = gris.crop((int(w * .10), int(h * .34), int(w * .85), int(h * .69)))
+    franja = gris.crop((int(w * .103), int(h * .341), int(w * .849), int(h * .691)))
     alternativo = pytesseract.image_to_string(franja, config=f"--psm 13 {config}").strip()
     candidato = extraer_matricula(alternativo)
     if re.fullmatch(r"[A-Z]{3}[0-9]{3}[A-Z]", candidato):

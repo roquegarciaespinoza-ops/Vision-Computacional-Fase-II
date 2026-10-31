@@ -2,9 +2,19 @@ name: Verificar Docker Hub
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - .github/workflows/docker-integration.yml
 
 permissions:
   contents: read
+
+concurrency:
+  group: docker-integration-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-push:
@@ -19,9 +29,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Construir y publicar imagen de prueba
+      - name: Construir y publicar imagen de diagnóstico
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: roquegarciaespinoza/vision-computacional-fase-ii:integration-test
+          tags: |
+            roquegarciaespinoza/vision-computacional-fase-ii:integration-test
+            roquegarciaespinoza/vision-computacional-fase-ii:integration-${{ github.sha }}

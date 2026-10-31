@@ -23,7 +23,7 @@ jobs:
       - name: Construir contenedor
         run: docker build -t vision-fase-ii:ci .
       - name: Ejecutar pruebas dentro del contenedor
-        run: docker run --rm vision-fase-ii:ci pytest -q
+        run: docker run --rm vision-fase-ii:ci python -m pytest -q
       - name: Comprobar API HTTP real
         run: |
           docker run -d --name fase2 -p 8000:8000 vision-fase-ii:ci

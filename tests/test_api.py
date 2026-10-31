@@ -41,3 +41,13 @@ def test_ocr_imagen_sintetica_integracion():
     assert data["decision"] in ("SIMULACION_AUTORIZADO", "REVISION_MANUAL")
     assert data["latencia_ms"] >= 0
     assert "advertencia" in data
+
+def test_demostracion_desde_api():
+    """El profesor puede usar una imagen sintética sin datos privados."""
+    demo = client.get("/api/demo/placa.png")
+    assert demo.status_code == 200
+    assert demo.headers["content-type"].startswith("image/png")
+    response = client.post("/api/reconocer", files={"archivo": ("demo.png", demo.content, "image/png")})
+    assert response.status_code == 200
+    assert response.json()["placa"] == "1234ABC"
+    assert response.json()["decision"] == "SIMULACION_AUTORIZADO"

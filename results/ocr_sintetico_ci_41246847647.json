@@ -1,0 +1,60 @@
+{
+  "tipo": "benchmark_sintetico_no_representativo",
+  "motor": "Tesseract",
+  "n": 6,
+  "exact_match": 1,
+  "cer_medio": 0,
+  "latencia_media_ms": 92.71,
+  "casos": [
+    {
+      "referencia": "1234ABC",
+      "prediccion": "1234ABC",
+      "condicion": "limpia",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 94.29
+    },
+    {
+      "referencia": "5678DEF",
+      "prediccion": "5678DEF",
+      "condicion": "limpia",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 94.11
+    },
+    {
+      "referencia": "2345BCD",
+      "prediccion": "2345BCD",
+      "condicion": "contraste_bajo",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 93.89
+    },
+    {
+      "referencia": "3456CDE",
+      "prediccion": "3456CDE",
+      "condicion": "borrosa",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 92.86
+    },
+    {
+      "referencia": "4567DEF",
+      "prediccion": "4567DEF",
+      "condicion": "rotada",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 90.33
+    },
+    {
+      "referencia": "6789FGH",
+      "prediccion": "6789FGH",
+      "condicion": "limpia",
+      "exact_match": true,
+      "cer": 0,
+      "latencia_ms": 90.8
+    }
+  ],
+  "limitacion": "Seis imágenes artificiales no representan matrículas reales ni evalúan LinearSVC.",
+  "origen": "GitHub Actions run 41246847647; artifact 13058499923; commit a57529d3d8e2ef3269d58024b8c278932da43d2b"
+}

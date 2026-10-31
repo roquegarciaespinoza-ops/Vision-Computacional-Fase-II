@@ -2,8 +2,8 @@
 import io, os, re, time
 from pathlib import Path
 from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import HTMLResponse
-from PIL import Image, ImageOps, UnidentifiedImageError
+from fastapi.responses import HTMLResponse, Response
+from PIL import Image, ImageOps, UnidentifiedImageError, ImageDraw, ImageFont
 import pytesseract
 
 app = FastAPI(title="Control de acceso vehicular - Fase II", version="0.1.0")
@@ -26,6 +26,18 @@ def inicio():
 @app.get("/health")
 def health():
     return {"status": "ok", "modo": "academico", "motor": "tesseract-baseline"}
+
+@app.get("/api/demo/placa.png")
+def placa_demostracion():
+    """Imagen generada artificialmente; no contiene datos de residentes."""
+    im = Image.new("RGB", (440, 110), "white")
+    d = ImageDraw.Draw(im)
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 54)
+    d.text((32, 16), "1234ABC", font=font, fill="black")
+    buffer = io.BytesIO()
+    im.save(buffer, format="PNG")
+    return Response(content=buffer.getvalue(), media_type="image/png",
+                    headers={"Cache-Control": "no-store"})
 
 @app.post("/api/reconocer")
 async def reconocer(archivo: UploadFile = File(...)):

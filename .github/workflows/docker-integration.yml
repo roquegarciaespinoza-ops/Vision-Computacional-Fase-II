@@ -24,6 +24,15 @@ jobs:
         run: docker build -t vision-fase-ii:ci .
       - name: Ejecutar pruebas dentro del contenedor
         run: docker run --rm vision-fase-ii:ci python -m pytest -q
+      - name: Ejecutar benchmark OCR sintético y exportar métricas
+        run: |
+          mkdir -p results
+          docker run --rm -v "$PWD/results:/srv/results" --user 0 vision-fase-ii:ci python -m scripts.evaluar_ocr_sintetico
+      - name: Conservar evidencia del benchmark
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-ocr-sintetico
+          path: results/ocr_sintetico.json
       - name: Comprobar API HTTP real
         run: |
           docker run -d --name fase2 -p 8000:8000 vision-fase-ii:ci

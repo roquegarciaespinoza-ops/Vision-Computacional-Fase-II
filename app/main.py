@@ -90,8 +90,7 @@ async def reconocer(archivo: UploadFile = File(...)):
         im = Image.open(io.BytesIO(data))
         if im.width * im.height > 16_000_000:
             raise HTTPException(413, "Imagen demasiado grande")
-        im = ImageOps.autocontrast(ImageOps.grayscale(im))
-        texto = pytesseract.image_to_string(im, config="--psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+        placa, texto = reconocer_texto(im)
     except (UnidentifiedImageError, OSError, ValueError):
         raise HTTPException(422, "Imagen inválida o corrupta")
     except pytesseract.TesseractError:

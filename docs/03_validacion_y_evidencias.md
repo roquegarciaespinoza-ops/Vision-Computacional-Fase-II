@@ -25,3 +25,6 @@ Estos son **resultados esperados definidos por las aserciones**; el workflow rep
 
 ## Interpretación
 El pipeline de infraestructura y API está validado en CI. La evaluación estadística del reconocimiento de matrículas completas **no está realizada**. La cifra histórica 92.09 % pertenece a clasificación de caracteres de Fase I.
+
+## Adenda de pruebas reales y cierre
+Se documentaron dos fotografías de placas mexicanas: Jalisco `JCZ-263-A` reconocida correctamente (373.52 ms) y Estado de México `PCH-96-04` con OCR vacío (586.86 ms). Ambas resultaron en `REVISION_MANUAL`, dado que el padrón es ficticio. Ver [registro completo, incidencias y evidencia de CI](07_cierre_y_pruebas_manuales.md). La tasa descriptiva 1/2 no es una medición estadísticamente representativa.

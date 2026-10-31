@@ -14,6 +14,43 @@ MAX_BYTES = 5 * 1024 * 1024
 def normalizar(texto: str) -> str:
     return re.sub(r"[^A-Z0-9]", "", texto.upper())
 
+def extraer_matricula(texto: str) -> str:
+    """Reconoce formatos ficticios 1234ABC y mexicano AAA999A.
+
+    Corrige confusiones OCR únicamente en posiciones definidas por el formato.
+    No debe emplearse para decisiones de acceso real sin validación adicional.
+    """
+    valor = normalizar(texto)
+    if re.fullmatch(r"[0-9]{4}[A-Z]{3}", valor):
+        return valor
+    if len(valor) == 7:
+        letras = {"0": "O", "1": "I", "2": "Z", "5": "S", "7": "Z", "8": "B"}
+        digitos = {"O": "0", "I": "1", "L": "1", "S": "5", "B": "8", "Z": "2"}
+        candidato = "".join((letras.get(ch, ch) if i in (0, 1, 2, 6) else digitos.get(ch, ch)) for i, ch in enumerate(valor))
+        if re.fullmatch(r"[A-Z]{3}[0-9]{3}[A-Z]", candidato):
+            return candidato
+    return valor
+
+
+def reconocer_texto(im: Image.Image) -> tuple[str, str]:
+    """OCR de referencia: imagen completa y franja central para placas mexicanas.
+
+    No realiza detección de objetos ni garantiza precisión en fotos arbitrarias.
+    """
+    gris = ImageOps.autocontrast(ImageOps.grayscale(im))
+    config = "-c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-"
+    principal = pytesseract.image_to_string(gris, config=f"--psm 7 {config}").strip()
+    if re.fullmatch(r"[0-9]{4}[A-Z]{3}", normalizar(principal)):
+        return normalizar(principal), principal
+    w, h = gris.size
+    franja = gris.crop((int(w * .10), int(h * .34), int(w * .85), int(h * .69)))
+    alternativo = pytesseract.image_to_string(franja, config=f"--psm 13 {config}").strip()
+    candidato = extraer_matricula(alternativo)
+    if re.fullmatch(r"[A-Z]{3}[0-9]{3}[A-Z]", candidato):
+        return candidato, alternativo
+    return extraer_matricula(principal), principal
+
+
 def evaluar(placa: str) -> dict:
     placa = normalizar(placa)
     return {"placa": placa, "autorizado": placa in PLATES if placa else False,
@@ -59,9 +96,9 @@ async def reconocer(archivo: UploadFile = File(...)):
         raise HTTPException(422, "Imagen inválida o corrupta")
     except pytesseract.TesseractError:
         raise HTTPException(503, "Motor OCR no disponible")
-    resultado = evaluar(texto)
+    resultado = evaluar(placa)
     return {**resultado, "texto_ocr": texto.strip(), "latencia_ms": round((time.perf_counter()-inicio)*1000,2),
-            "advertencia": "OCR Tesseract de referencia; no es el modelo LinearSVC de Fase I. Sin detección automática de placa."}
+            "advertencia": "OCR Tesseract de referencia; no es el modelo LinearSVC de Fase I. Recorte heurístico central, sin detección automática de placa."}
 
 @app.post("/api/verificar")
 def verificar(placa: str):

@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import app, evaluar, normalizar
+from app.main import app, evaluar, normalizar, extraer_matricula
 
 client = TestClient(app)
 
@@ -51,3 +51,9 @@ def test_demostracion_desde_api():
     assert response.status_code == 200
     assert response.json()["placa"] == "1234ABC"
     assert response.json()["decision"] == "SIMULACION_AUTORIZADO"
+
+
+def test_formato_matricula_mexicana():
+    assert extraer_matricula("JC7-263-A") == "JCZ263A"
+    assert extraer_matricula("JCZ-263-A") == "JCZ263A"
+    assert evaluar("JCZ263A")["decision"] == "REVISION_MANUAL"

@@ -15,3 +15,11 @@
 - **Seguridad:** padrón ficticio y decisión simulada; sin autorización física, autenticación ni tratamiento de datos reales.
 
 Esta matriz muestra evidencias de cumplimiento, **no constituye una calificación garantizada de 100/100**.
+
+## Doble check final — 31 octubre 2026
+- **Contenerización (25 pts):** Dockerfile, imagen versionada, ejecución local documentada y [CI 41253589161 exitosa](https://github.com/roquegarciaespinoza-ops/Vision-Computacional-Fase-II/actions/runs/41253589161).
+- **Integración (25 pts):** frontend/API/backend, salud HTTP, demo sintética y pruebas manuales de navegador documentadas en [cierre](07_cierre_y_pruebas_manuales.md).
+- **Pruebas (25 pts):** pytest y benchmark sintético verificables; **también se registran los dos ensayos reales, incluido el fallo de OCR**, sin extrapolar 6/6 a campo.
+- **Documentación (25 pts):** README, manual, informe, arquitectura, matriz, evidencia cuantitativa y cierre; PDF y DOCX en `entregables/`.
+
+**Precisión de la documentación:** los PDF/DOCX existentes se generaron antes de esta adenda. La evidencia manual más reciente y el doble check están en `docs/07_cierre_y_pruebas_manuales.md`; no se afirma que los binarios incorporen esas observaciones. El profesor determina la puntuación final; no se garantiza 100/100.
